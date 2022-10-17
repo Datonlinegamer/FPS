@@ -21,25 +21,34 @@ public class Shoot : MonoBehaviour
             {
 
                 if(Physics.Raycast(shootPoints[i].position, transform.forward, out cast, rayLanth))
-                if (cast.collider.gameObject.tag =="Pumpkin")
+                if (Input.GetMouseButton(0) &&cast.collider.gameObject.tag =="Pumpkin")
                 {
                         Debug.Log(cast.collider.name);
                         health.Instance.TakeDamage(4);
                   
                 }
+            
+           
             }
         }
+    }
+
+    void Emitflash()
+    {
+       if ( Input.GetMouseButtonDown(0))
+       {
+            for (int q = 0; q< flash.Count; q++)
+            {
+                CameraRecoil.Instance.Recoilfire();
+                flash[q].Emit(30);
+            }
+
+       }
     }
     void Update()
     {
         SetRay();
-        if (Input.GetMouseButton(0))
-        {
-            for (int i = 0; i < flash.Count; i++)
-            {
-                flash[i].Emit(30);
-            }
-        }
+        Emitflash(); 
 
     }
     private void OnDrawGizmos()

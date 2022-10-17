@@ -13,8 +13,8 @@ public class Weapensway : MonoBehaviour
     
      void SwayInput()
     {   
-        swayH = Input.GetAxis("Mouse X") * Swayamount;
-        swayV = Input.GetAxis("Mouse Y") * Swayamount;
+        swayH = Input.GetAxis("Mouse X") * Swayamount * Time.deltaTime;
+        swayV = Input.GetAxis("Mouse Y") * Swayamount * Time.deltaTime;
     }
 
 

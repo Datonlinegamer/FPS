@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour
 
     public	LayerMask WhatisGround;
 
-   public bool Grounded;
+    public bool Moving;
+    public bool Grounded;
      public bool Canjump;
 
     public Transform Orientation;
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
         Groundcheck();
         PlayspeedControl();
         PlayersInput();
+        playerSprit();
     }
 
 	private void FixedUpdate()
@@ -51,14 +53,17 @@ public class PlayerController : MonoBehaviour
        Vertical = Input.GetAxisRaw("Vertical");
 
         if (Grounded)
+        {
             rb.drag = groundDrag;
+        Moving = false;
+
+        }
 
         else
             rb.drag = 0;
-
-			
 		
 	}
+   
 
        public RaycastHit hit;
      public bool Groundcheck()
@@ -69,10 +74,16 @@ public class PlayerController : MonoBehaviour
             {
               
                 rb.AddForce(Vector3.up .normalized* Jumpforce, ForceMode.Force);
+
                 Debug.Log(hit.collider);
-            }
-           
-        } 
+
+            }   
+
+                
+            
+        }       
+        
+                
       
         return Grounded;
 	}
@@ -90,18 +101,35 @@ public class PlayerController : MonoBehaviour
         flatSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 		if (flatSpeed.magnitude > moveSpeed)
 		{
+            Moving = true;
             Vector3 speedlimit;
             speedlimit = flatSpeed.normalized * moveSpeed;
            rb.velocity = new Vector3(speedlimit.x, rb.velocity.y, speedlimit.z);
         }
-
+        if (!(flatSpeed == Vector3.zero))
+        {
+            return;
+        }   
+            Moving = false;
 	}
 
     bool CanJump()
     {
         return Canjump  ;
     }
-    
+       public float SpritcoolDown ;
+    void playerSprit()
+    {
+        if (Input.GetKey(KeyCode.LeftShift)&& Moving != false)
+        {
+            SpritcoolDown -= Time.deltaTime;
+            moveSpeed = 1000* Time.deltaTime;
+        }
+        if (SpritcoolDown <= 0)
+        {
+            moveSpeed = 100;
+        }
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

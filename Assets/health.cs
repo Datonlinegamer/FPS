@@ -6,19 +6,20 @@ public class health : MonoBehaviour
 {
 
     public static health Instance;
-  public  int Currenthealth = 10;
-    int Maxhealth;
+  public float Currenthealth  ;
+   float Maxhealth;
     
     void Start()
     {
+        
         Currenthealth = Maxhealth;
         Instance = this;
     }
 
-    public void TakeDamage(int d)
+    public void TakeDamage(float d)
     {
         Currenthealth -= d;
-        if (Currenthealth < 0)
+        if (Currenthealth <=0)
         {
             Die();
         }

@@ -5,14 +5,26 @@ using UnityEngine;
 public class BadPumpkinBehaviar : MonoBehaviour
 {
 
-    float distance;
-   
-    void Start()
+    float Distance =1;
+    float Inrange;
+
+    bool inRange;
+    RaycastHit Cast;
+
+
+    bool InRange()
     {
+
+        if (!(Physics.Raycast(this.transform.position, transform.forward, out Cast, Distance)))
+        {
+            return inRange;
+        }
+
         
+        return inRange = true;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         

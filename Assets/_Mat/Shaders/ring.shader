@@ -6,7 +6,10 @@ Shader "Unlit/Jade's Shader'"
 
             _Color("Main Color", Color) = (1,1,1,1)
             _RimColor("Rim Color", Color) = (1, 1, 1, 1)
-            _MainTex("Base (RGB)", 2D) = "white" {}
+         _MainTex("Base (RGB)", 2D) = "white" {}
+       //  Vertex_offSet("Vertex_offSet",float) = (0,0,0)
+         _AnimatonSpeed("AnimatonSpeed", Range(0,3)) = 0
+         _Offsetscale("Offsetscale",Range(0,  700)) = 0
     }
 
         SubShader{
@@ -20,7 +23,7 @@ Shader "Unlit/Jade's Shader'"
                     
                 CGPROGRAM
 
-                    #pragma vertex vert
+                  #pragma vertex vert
                     #pragma fragment frag
                     #include "UnityCG.cginc"
                     struct appdata {
@@ -37,19 +40,23 @@ Shader "Unlit/Jade's Shader'"
 
                     uniform float4 _MainTex_ST;
                     uniform float4 _RimColor;
+                    uniform float Vertex_offSet;
+                    float _AnimatonSpeed;
+                    float _Offsetscale;
                     
 
-                    v2f vert(appdata_base v) {
+                    v2f vert(appdata v) {
                         v2f o;
+                       v.vertex.xy += v.vertex.x * sin(v.vertex.yz* _AnimatonSpeed + v.vertex.y* _Offsetscale) *_Time.xyz;
+                       //  v.vertex +=Vertex_offSet;  
                         o.pos = UnityObjectToClipPos (v.vertex);
-
-                        float3 viewDir = normalize(ObjSpaceViewDir(v.vertex));
+                         float3 viewDir = normalize(ObjSpaceViewDir(v.vertex));
                         float dotProduct = 1 - dot(v.normal, viewDir);
                         float rimWidth = 0.8;
                         o.color = smoothstep(1 - rimWidth, 1.0, dotProduct);
 
                         o.color *= _RimColor *4;
-
+                        
                         o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
 
                         return o;

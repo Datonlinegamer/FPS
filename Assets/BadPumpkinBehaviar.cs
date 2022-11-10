@@ -27,6 +27,6 @@ public class BadPumpkinBehaviar : MonoBehaviour
 
     void Update()
     {
-        
+        this.transform.localPosition -= -transform.right  *Time.deltaTime /6 ;
     }
 }

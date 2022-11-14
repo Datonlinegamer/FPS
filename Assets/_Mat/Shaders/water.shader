@@ -3,7 +3,7 @@ Shader "Unlit/Water"
     Properties
     {
         _MainTex("Water", 2D) = "white" {}
-        _NormalTex("Normal map",2D) = "white"{}
+        _NormalTex("NormalTex",2D) = "Bump"{}
         _Color("color", COLOR) = (1,1,1,1)
         _Waves("Waves", Float) = 1.0
         _Speed("Speed", Float) = 0.2
@@ -51,6 +51,7 @@ Shader "Unlit/Water"
             {
            
                 float3 normal = UnityObjectToWorldNormal(v.normal);
+                normal = unity
                 v.vertex.y += cos(v.uv.x * _Waves + _Time.y) * _Speed;
                 v.vertex.y += sin(v.uv.y * _Waves / 2.0 + _Time.y) * _Speed;
 
@@ -64,7 +65,7 @@ Shader "Unlit/Water"
 
             fixed4 frag(v2f i) : SV_Target
             {
-            float3 tangentNormal = tex2D(_NormalTex, i.uv) * 2 - 1;
+            float3 tangentNormal = tex2D(_NormalTex, i.uv);
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
 
